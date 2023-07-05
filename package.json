@@ -5,8 +5,7 @@
   "author": "oeyoews <jyao4783@gmail.com>",
   "type": "module",
   "scripts": {
-    "dev": "ts-node-esm index.ts",
-    "tsx": "tsx index.ts",
+    "dev": "tsx index.ts",
     "build-run": "tsc && node --no-warnings dist/index.js"
   },
   "license": "MIT",

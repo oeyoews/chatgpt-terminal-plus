@@ -5,17 +5,17 @@ import chalk from "chalk";
 
 dotenv.config();
 
-async function Chat() {
-  const api = new ChatGPTAPI({
-    apiKey: process.env["OPENAI_API_KEY"] as string,
-    debug: false,
-    completionParams: {
-      model: "gpt-3.5-turbo",
-      temperature: 0.5,
-      top_p: 0.8,
-    },
-  });
+const api = new ChatGPTAPI({
+  apiKey: process.env["OPENAI_API_KEY"] as string,
+  debug: false,
+  completionParams: {
+    model: "gpt-3.5-turbo",
+    temperature: 0.5,
+    top_p: 0.8,
+  },
+});
 
+async function Chat() {
   if (!api.apiKey) {
     console.log(chalk.red.bold("OpenAI API key not found"));
     return;
@@ -54,8 +54,10 @@ async function Chat() {
       systemMessage: `Please use chinese to answer user questions with gfm markdown`,
     });
 
+    const nowTime = new Date().toLocaleTimeString();
     console.log(
-      `\n本次花费tokens ⤑ ` + chalk.cyan.bold(res.detail?.usage?.total_tokens)
+      `\n${nowTime} 本次花费tokens ⤑ ` +
+        chalk.cyan.bold(res.detail?.usage?.total_tokens)
     );
   }
 }
