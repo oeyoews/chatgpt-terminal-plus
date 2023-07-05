@@ -41,14 +41,14 @@ async function Chat() {
     let res = await api.sendMessage(userMessage, {
       onProgress: (partialResponse) => {
         if (partialResponse.delta === "") {
-          process.stdout.write("🎁 ");
+          process.stdout.write("\n🎁 ");
         }
         if (partialResponse.delta) {
           process.stdout.write(chalk.green(partialResponse.delta));
         }
-        /* if (partialResponse.delta === undefined) {
+        if (partialResponse.delta === undefined) {
           console.log("\n");
-        } */
+        }
       },
       timeoutMs: 2 * 60 * 1000,
       systemMessage: `Please use chinese to answer user questions with gfm markdown`,
@@ -56,8 +56,8 @@ async function Chat() {
 
     const nowTime = new Date().toLocaleTimeString();
     console.log(
-      `\n${nowTime} 本次花费tokens ⤑ ` +
-        chalk.cyan.bold(res.detail?.usage?.total_tokens)
+      `${nowTime} 本次花费tokens ⤑ ` +
+        chalk.cyan.bold(res.detail?.usage?.total_tokens, "\n")
     );
   }
 }
