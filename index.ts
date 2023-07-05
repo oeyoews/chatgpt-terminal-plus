@@ -23,22 +23,46 @@ async function Chat() {
 
   let exit = false;
 
+  let response = await prompts({
+    type: "text",
+    name: "userMessage",
+    message: "Send your prompt",
+  });
+
+  let userMessage = response.userMessage || "exit";
+
+  let res = await api.sendMessage(userMessage, {
+    onProgress: (partialResponse) => {
+      if (partialResponse.delta === "") {
+        process.stdout.write("\n🎁 ");
+      }
+      if (partialResponse.delta) {
+        process.stdout.write(chalk.green(partialResponse.delta));
+      }
+      if (partialResponse.delta === undefined) {
+        console.log("\n");
+      }
+    },
+    timeoutMs: 2 * 60 * 1000,
+    systemMessage: `Please use chinese to answer user questions with gfm markdown`,
+  });
+
   while (!exit) {
-    const response = await prompts({
+    if (userMessage === "exit") {
+      exit = true;
+      break;
+    }
+
+    response = await prompts({
       type: "text",
       name: "userMessage",
       message: "Send your prompt",
     });
 
-    const userMessage = response.userMessage || "exit";
+    userMessage = response.userMessage || "exit";
 
-    if (userMessage === "exit") {
-      exit = true;
-      // console.log("Goodbye!");
-      break;
-    }
-
-    let res = await api.sendMessage(userMessage, {
+    res = await api.sendMessage(userMessage, {
+      parentMessageId: res.id,
       onProgress: (partialResponse) => {
         if (partialResponse.delta === "") {
           process.stdout.write("\n🎁 ");
