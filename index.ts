@@ -15,54 +15,18 @@ const api = new ChatGPTAPI({
   },
 });
 
-async function Chat() {
+async function chatgpt_terminal_plus() {
   if (!api.apiKey) {
     console.log(chalk.red.bold("OpenAI API key not found"));
     return;
   }
 
   let exit = false;
+  let res: any;
 
-  let response = await prompts({
-    type: "text",
-    name: "userMessage",
-    message: "Send your prompt",
-  });
-
-  let userMessage = response.userMessage || "exit";
-
-  let res = await api.sendMessage(userMessage, {
-    onProgress: (partialResponse) => {
-      if (partialResponse.delta === "") {
-        process.stdout.write("\n🎁 ");
-      }
-      if (partialResponse.delta) {
-        process.stdout.write(chalk.green(partialResponse.delta));
-      }
-      if (partialResponse.delta === undefined) {
-        console.log("\n");
-      }
-    },
-    timeoutMs: 2 * 60 * 1000,
-    systemMessage: `Please use chinese to answer user questions with gfm markdown`,
-  });
-
-  while (!exit) {
-    if (userMessage === "exit") {
-      exit = true;
-      break;
-    }
-
-    response = await prompts({
-      type: "text",
-      name: "userMessage",
-      message: "Send your prompt",
-    });
-
-    userMessage = response.userMessage || "exit";
-
+  const sendMessage = async (userMessage: any) => {
     res = await api.sendMessage(userMessage, {
-      parentMessageId: res.id,
+      parentMessageId: res?.id,
       onProgress: (partialResponse) => {
         if (partialResponse.delta === "") {
           process.stdout.write("\n🎁 ");
@@ -75,7 +39,7 @@ async function Chat() {
         }
       },
       timeoutMs: 2 * 60 * 1000,
-      systemMessage: `Please use chinese to answer user questions with gfm markdown`,
+      systemMessage: `Please use Chinese to answer user questions with GFM markdown`,
     });
 
     const nowTime = new Date().toLocaleTimeString();
@@ -83,7 +47,30 @@ async function Chat() {
       `${nowTime} 本次花费tokens ⤑ ` +
         chalk.cyan.bold(res.detail?.usage?.total_tokens, "\n")
     );
+  };
+
+  while (!exit) {
+    let response = await prompts({
+      type: "text",
+      name: "userMessage",
+      message: "Send your prompt",
+      // TODO support ctrl D
+      onState: (state) => {
+        if (state.aborted) {
+          exit = true;
+        }
+      },
+    });
+
+    const userMessage = response.userMessage || "exit";
+
+    if (userMessage === "exit") {
+      exit = true;
+      break;
+    }
+
+    await sendMessage(userMessage);
   }
 }
 
-Chat();
+chatgpt_terminal_plus();
