@@ -1,0 +1,28 @@
+{
+  "name": "openai-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "oeyoews <jyao4783@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "dev": "ts-node-esm index.ts",
+    "tsx": "tsx index.ts",
+    "build-run": "tsc && node --no-warnings dist/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chatgpt": "^5.2.5",
+    "dotenv": "^16.3.1",
+    "openai": "^3.3.0",
+    "ora": "^6.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "@types/prompts": "^2.4.4",
+    "chalk": "^5.3.0",
+    "prompts": "^2.4.2",
+    "ts-node": "^10.9.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}
