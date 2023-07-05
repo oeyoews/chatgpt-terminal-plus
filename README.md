@@ -12,3 +12,4 @@
 * 支持多行输入
 * 支持终端解析markdown
 * support esbuild
+* support 消息压缩
