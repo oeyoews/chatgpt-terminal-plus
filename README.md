@@ -8,3 +8,4 @@
 * 支持复制到粘贴版
 * support context
 * support conversation to markdown file
+* 支持终端解析markdown
