@@ -29,7 +29,7 @@ async function chatgpt_terminal_plus() {
       parentMessageId: res?.id,
       onProgress: (partialResponse) => {
         if (partialResponse.delta === "") {
-          process.stdout.write("\n🎁 ");
+          process.stdout.write("\n🍉 ");
         }
         if (partialResponse.delta) {
           process.stdout.write(chalk.green(partialResponse.delta));
