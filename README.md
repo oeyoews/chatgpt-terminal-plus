@@ -10,3 +10,4 @@
 * support conversation to markdown file
 * 支持多行输入
 * 支持终端解析markdown
+* support esbuild

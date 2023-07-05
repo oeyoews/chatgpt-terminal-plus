@@ -19,6 +19,7 @@
     "@types/node": "^20.3.3",
     "@types/prompts": "^2.4.4",
     "chalk": "^5.3.0",
+    "esbuild": "^0.18.11",
     "prompts": "^2.4.2",
     "ts-node": "^10.9.1",
     "tsx": "^3.12.7",
