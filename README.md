@@ -1,6 +1,7 @@
+![Chatgpt-terminal-plus](https://i.imgur.com/gPsZFP0.png "Chatgpt-terminal-plus")
+
 * support ora
 * support key to exit
-
 * tsx: https://juejin.cn/post/7163685872750034981
 * ts-node 不支持 node20 暂时, 使用tsx代替
 * dotenv-safe 文件声明问题
