@@ -52,6 +52,21 @@ export const startMessaging = async () => {
 
     if (userMessage === "> exit") {
       exit = true;
+      const response = await prompts({
+        type: "confirm",
+        name: "shouldSave",
+        message: "是否保存对话？",
+      });
+
+      if (response.shouldSave) {
+        let conversationTitle = await prompts({
+          type: "text",
+          name: "title",
+          message: "标题",
+        });
+
+        saveConversation(conversationTitle.title.trim().toLowerCase());
+      }
       break;
     }
 
@@ -66,15 +81,20 @@ export const startMessaging = async () => {
         let conversationTitle = await prompts({
           type: "text",
           name: "title",
-          message: "起一个标题",
+          message: "标题",
         });
 
         saveConversation(conversationTitle.title.trim().toLowerCase());
       }
     }
 
-    await sendMessage(userMessage);
+    if (
+      userMessage !== "> new" ||
+      userMessage !== "> exit" ||
+      userMessage !== ""
+    ) {
+      await sendMessage(userMessage);
+    }
+    console.log(userMessage);
   }
-
-  saveConversation("Last-Chat-Conversation");
 };
