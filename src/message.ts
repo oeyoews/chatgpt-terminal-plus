@@ -45,6 +45,7 @@ export const startMessaging = async () => {
       type: "text",
       name: "userMessage",
       message: "Send your prompt",
+      initial: "> exit",
     });
 
     let userMessage = chatPrompt.userMessage?.trim();
@@ -61,6 +62,7 @@ export const startMessaging = async () => {
           name: "title",
           // TODO: support res.text
           message: "标题",
+          initial: "Title",
         },
       ]);
       conversationSave.title &&
