@@ -1,3 +1,4 @@
+import fs from "fs";
 import dotenv from "dotenv";
 import { ChatGPTAPI } from "chatgpt";
 import prompts from "prompts";
@@ -23,6 +24,7 @@ async function chatgpt_terminal_plus() {
 
   let exit = false;
   let res: any;
+  let conversation = ""; // 保存对话内容的变量
 
   const sendMessage = async (userMessage: string) => {
     res = await api.sendMessage(userMessage, {
@@ -41,7 +43,8 @@ async function chatgpt_terminal_plus() {
         }
       },
       timeoutMs: 2 * 60 * 1000,
-      systemMessage: `Please use Chinese to answer user questions with GFM markdown`,
+      systemMessage:
+        "Please use Chinese to answer user questions with GFM markdown",
     });
 
     const nowTime = new Date().toLocaleTimeString();
@@ -49,6 +52,9 @@ async function chatgpt_terminal_plus() {
       `${nowTime} 本次花费tokens ⤑ ` +
         chalk.cyan.bold(res.detail?.usage?.total_tokens, "\n")
     );
+
+    const botReply = `> 🤖 **Bot**: \n${res.text}\n\n`;
+    conversation += `[${nowTime}]\n\n> 📝 **User**: ${userMessage}\n\n${botReply}`; // 将每个用户消息和机器人回复追加到对话变量中
   };
 
   while (!exit) {
@@ -71,7 +77,24 @@ async function chatgpt_terminal_plus() {
       break;
     }
 
+    if (userMessage === "> new") {
+      // 如果开始了新的对话，生成一个新的文件
+      if (conversation !== "") {
+        const filename = `conversation_${Date.now().toString()}.md`;
+        fs.writeFileSync(filename, conversation); // 将对话保存到Markdown文件
+        console.log(chalk.green(`Conversation saved to "${filename}"`));
+      }
+      conversation = ""; // 重置对话变量
+    }
+
     await sendMessage(userMessage);
+  }
+
+  // 在最后结束对话前保存对话内容到文件
+  if (conversation !== "") {
+    const filename = `conversation_${Date.now().toString()}.md`;
+    fs.writeFileSync(filename, conversation); // 将对话保存到Markdown文件
+    console.log(chalk.green(`Conversation saved to "${filename}"`));
   }
 }
 
