@@ -5,6 +5,7 @@
 
 ## TODO
 
+* support select mode with prompt
 * [x] support ora
 * [x] support key to exit
 * [x] tsx: https://juejin.cn/post/7163685872750034981

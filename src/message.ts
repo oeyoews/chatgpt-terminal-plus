@@ -8,7 +8,7 @@ let res: any = {};
 
 export const sendMessage = async (userMessage: string) => {
   res = await api.sendMessage(userMessage, {
-    parentMessageId: (userMessage !== "> new" && res?.id) || null,
+    parentMessageId: res?.id,
     onProgress: (partialResponse) => {
       if (partialResponse.delta === "") {
         // TODO
@@ -47,8 +47,7 @@ export const startMessaging = async () => {
       message: "Send your prompt",
     });
 
-    const userMessage =
-      chatPrompt.userMessage?.trim().toLowerCase() || "> exit";
+    let userMessage = chatPrompt.userMessage?.trim();
 
     if (userMessage === "> new" || userMessage === "> exit") {
       const conversationSave = await prompts([
@@ -68,12 +67,16 @@ export const startMessaging = async () => {
         saveConversation(conversationSave.title?.trim().toLowerCase());
 
       if (userMessage === "> exit") break;
+
       if (userMessage === "> new") {
+        // 开始新的对话, 重置id
+        userMessage = "开始新的对话";
+        res.id = null;
         console.log(chalk.cyan.bold("🟪 New conversation started"));
       }
     }
-    if (userMessage !== "> new" || userMessage !== "> exit") {
-      userMessage && (await sendMessage(userMessage));
-    }
+
+    await sendMessage(userMessage);
+    // userMessage && (await sendMessage(userMessage));
   }
 };
