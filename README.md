@@ -9,7 +9,13 @@
 * 支持复制到粘贴版
 * support context
 * support conversation to markdown file
+* 自定义存储位置
+* 自动命名
 * 支持多行输入
 * 支持终端解析markdown
 * support esbuild
 * support 消息压缩
+* 差分为多个文件
+* 询问是否保存文件
+* 询问保存文件的名字
+* 每个文件起一个标题
