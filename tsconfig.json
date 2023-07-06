@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["./index.ts"],
+  "include": ["src/**.ts"],
   "compilerOptions": {
     // Disabled because of https://github.com/Microsoft/TypeScript/issues/29172
     "removeComments": true,

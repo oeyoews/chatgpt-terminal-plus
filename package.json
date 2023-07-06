@@ -5,7 +5,7 @@
   "author": "oeyoews <jyao4783@gmail.com>",
   "type": "module",
   "scripts": {
-    "dev": "tsx index.ts",
+    "dev": "tsx src/index.ts",
     "build-run": "tsc && node --no-warnings dist/index.js"
   },
   "license": "MIT",

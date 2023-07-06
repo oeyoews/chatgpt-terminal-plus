@@ -9,7 +9,7 @@ dotenv.config();
 
 const api = new ChatGPTAPI({
   apiKey: process.env["OPENAI_API_KEY"] as string,
-  debug: false,
+  debug: true,
   completionParams: {
     model: "gpt-3.5-turbo",
     temperature: 0.5,

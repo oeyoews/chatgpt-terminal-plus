@@ -20,3 +20,4 @@
 * 询问保存文件的名字
 * 每个文件起一个标题
 * fix new
+* fix last conversation
