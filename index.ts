@@ -1,5 +1,6 @@
 import fs from "fs";
 import dotenv from "dotenv";
+import path from "path";
 import { ChatGPTAPI } from "chatgpt";
 import prompts from "prompts";
 import chalk from "chalk";
@@ -95,7 +96,10 @@ async function chatgpt_terminal_plus() {
         // 如果开始了新的对话，生成一个新的文件
         mdTitle = conversationTitle.title.trim().toLowerCase();
         if (conversation !== "") {
-          let filename = `${mdTitle}.md`;
+          const directory = path.join("./", "conversations");
+          let filename = path.join(directory, `${mdTitle}.md`);
+          // 创建目录（如果目录不存在）
+          fs.mkdirSync(directory, { recursive: true });
 
           // 检查文件是否存在，若存在则添加时间戳后缀
           if (fs.existsSync(filename)) {
@@ -117,7 +121,9 @@ async function chatgpt_terminal_plus() {
 
   // 在最后结束对话前保存对话内容到文件
   if (conversation !== "") {
-    const filename = `Last-Chat-Conversation.md`;
+    const directory = path.join("./", "conversations");
+    fs.mkdirSync(directory, { recursive: true });
+    const filename = `./conversations/Last-Chat-Conversation.md`;
     fs.writeFile(filename, `# Last Conversavtion\n\n${conversation}`, (err) => {
       console.log(err);
     }); // 将对话保存到Markdown文件
