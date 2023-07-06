@@ -13,7 +13,8 @@ export const saveConversation = (mdTitle: string) => {
 
     if (fs.existsSync(filename)) {
       const timestamp = new Date().getTime();
-      filename = `${mdTitle}_${timestamp}.md`;
+      mdTitle = `${mdTitle}_${timestamp}.md`;
+      filename = path.join(directory, `${mdTitle}.md`);
     }
 
     fs.writeFile(filename, `# ${mdTitle}\n\n${conversation}`, (err) => {
