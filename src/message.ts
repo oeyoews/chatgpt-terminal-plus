@@ -11,7 +11,7 @@ export const sendMessage = async (userMessage: string) => {
     parentMessageId: (userMessage !== "> new" && res?.id) || null,
     onProgress: (partialResponse) => {
       if (partialResponse.delta === "") {
-        userMessage === "new" &&
+        userMessage === "> new" &&
           console.log(chalk.cyan.bold("🟪 New conversation started"));
         process.stdout.write("\n🍉 ");
       }
@@ -95,6 +95,5 @@ export const startMessaging = async () => {
     ) {
       await sendMessage(userMessage);
     }
-    console.log(userMessage);
   }
 };
