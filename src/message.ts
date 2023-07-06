@@ -4,7 +4,7 @@ import prompts from "prompts";
 import { saveConversation, appendToConversation } from "./conversation.js";
 import api from "./api.js";
 
-let res: any;
+let res: any = {};
 
 export const sendMessage = async (userMessage: string) => {
   res = await api.sendMessage(userMessage, {
@@ -65,17 +65,14 @@ export const startMessaging = async () => {
       ]);
       conversationSave.title &&
         saveConversation(conversationSave.title?.trim().toLowerCase());
+
       if (userMessage === "> exit") break;
       if (userMessage === "> new") {
         console.log(chalk.cyan.bold("🟪 New conversation started"));
       }
     }
-    if (
-      userMessage !== "> new" ||
-      userMessage !== "> exit" ||
-      userMessage !== ""
-    ) {
-      await sendMessage(userMessage);
+    if (userMessage !== "> new" || userMessage !== "> exit") {
+      userMessage && (await sendMessage(userMessage));
     }
   }
 };
