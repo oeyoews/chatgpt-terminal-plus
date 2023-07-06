@@ -24,11 +24,13 @@ async function chatgpt_terminal_plus() {
   let exit = false;
   let res: any;
 
-  const sendMessage = async (userMessage: any) => {
+  const sendMessage = async (userMessage: string) => {
     res = await api.sendMessage(userMessage, {
-      parentMessageId: res?.id,
+      parentMessageId: (userMessage !== "> new" && res?.id) || null,
       onProgress: (partialResponse) => {
         if (partialResponse.delta === "") {
+          userMessage === "new" &&
+            console.log(chalk.cyan.bold("🟪 New conversation started"));
           process.stdout.write("\n🍉 ");
         }
         if (partialResponse.delta) {
@@ -62,9 +64,9 @@ async function chatgpt_terminal_plus() {
       },
     });
 
-    const userMessage = response.userMessage || "exit";
+    const userMessage = response.userMessage?.trim().toLowerCase() || "> exit";
 
-    if (userMessage === "exit") {
+    if (userMessage === "> exit") {
       exit = true;
       break;
     }
