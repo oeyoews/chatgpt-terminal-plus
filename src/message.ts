@@ -11,8 +11,7 @@ export const sendMessage = async (userMessage: string) => {
     parentMessageId: (userMessage !== "> new" && res?.id) || null,
     onProgress: (partialResponse) => {
       if (partialResponse.delta === "") {
-        userMessage === "> new" &&
-          console.log(chalk.cyan.bold("🟪 New conversation started"));
+        // TODO
         process.stdout.write("\n🍉 ");
       }
       if (partialResponse.delta) {
@@ -42,52 +41,35 @@ export const startMessaging = async () => {
   let exit = false;
 
   while (!exit) {
-    let response = await prompts({
+    const chatPrompt = await prompts({
       type: "text",
       name: "userMessage",
       message: "Send your prompt",
     });
 
-    const userMessage = response.userMessage?.trim().toLowerCase() || "> exit";
+    const userMessage =
+      chatPrompt.userMessage?.trim().toLowerCase() || "> exit";
 
-    if (userMessage === "> exit") {
-      exit = true;
-      const response = await prompts({
-        type: "confirm",
-        name: "shouldSave",
-        message: "是否保存对话？",
-      });
-
-      if (response.shouldSave) {
-        let conversationTitle = await prompts({
-          type: "text",
+    if (userMessage === "> new" || userMessage === "> exit") {
+      const conversationSave = await prompts([
+        {
+          type: "confirm",
+          name: "shouldSave",
+          message: "是否保存对话？",
+        },
+        {
+          type: (pre) => (pre == false ? null : "text"),
           name: "title",
           message: "标题",
-        });
-
-        saveConversation(conversationTitle.title.trim().toLowerCase());
-      }
-      break;
-    }
-
-    if (userMessage === "> new") {
-      const response = await prompts({
-        type: "confirm",
-        name: "shouldSave",
-        message: "是否保存对话？",
-      });
-
-      if (response.shouldSave) {
-        let conversationTitle = await prompts({
-          type: "text",
-          name: "title",
-          message: "标题",
-        });
-
-        saveConversation(conversationTitle.title.trim().toLowerCase());
+        },
+      ]);
+      conversationSave.title &&
+        saveConversation(conversationSave.title?.trim().toLowerCase());
+      if (userMessage === "> exit") break;
+      if (userMessage === "> new") {
+        console.log(chalk.cyan.bold("🟪 New conversation started"));
       }
     }
-
     if (
       userMessage !== "> new" ||
       userMessage !== "> exit" ||
