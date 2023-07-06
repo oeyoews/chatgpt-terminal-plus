@@ -60,6 +60,7 @@ export const startMessaging = async () => {
         {
           type: (pre) => (pre == false ? null : "text"),
           name: "title",
+          // TODO: support res.text
           message: "标题",
         },
       ]);
