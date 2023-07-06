@@ -73,10 +73,18 @@ export const startMessaging = async () => {
         userMessage = "开始新的对话";
         res.id = null;
         console.log(chalk.cyan.bold("🟪 New conversation started"));
+
+        // Prompt for a new user message
+        const newMessagePrompt = await prompts({
+          type: "text",
+          name: "userInput",
+          message: "🟩 New conversation",
+        });
+
+        userMessage = newMessagePrompt.userInput?.trim();
       }
     }
 
     await sendMessage(userMessage);
-    // userMessage && (await sendMessage(userMessage));
   }
 };

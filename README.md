@@ -25,5 +25,5 @@
 * [x] 询问是否保存文件
 * [x] 询问保存文件的名字
 * [x] 每个文件起一个标题
-* [ ] fix new
-* [ ] fix last conversation
+* [x] fix new
+* [x] fix last conversation
